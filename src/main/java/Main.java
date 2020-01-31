@@ -15,7 +15,7 @@ import java.util.Random;
 public class Main { 
 	
 	public static void main(String[] args) throws IOException {
-		// Karten generieren lassen & auf File schreiben mit Reader / Writer klasse
+		// Karten generieren lassen & auf File schreiben
 		
 		Random random = new Random();
 		BufferedWriter writer = new BufferedWriter(new FileWriter(new File("Files/flugzeug.txt")));
@@ -34,18 +34,20 @@ public class Main {
 		};
 		writer.close();
 		
-		// Karten von File lesen und als liste bekommen
+		// Karten von File lesen und als Liste bekommen
 		
 		 List<Card> cards = new ArrayList<Card>();
 		String LineReader;
 
 		FileReader fr = new FileReader("Files/flugzeug.txt");
 		BufferedReader br = new BufferedReader(fr);
-
+		
+		Side side = new Side();
 		while ((LineReader = br.readLine()) != null) {
 			System.out.println(LineReader);
-			Side[] parts = LineReader.split("/");
-			cards.add(new Card(parts[0], parts[1], parts[2], parts[3]));
+			String[] parts = LineReader.split("/");
+			side.setColor(parts[0]);
+			Card card = new Card(parts[0], parts[1], parts[2], parts[3]);
 		}
 		// Solver aufrufen und Solutions in Liste speichern
 		Solver solver = new Solver();	
@@ -53,7 +55,7 @@ public class Main {
 		
 		List<Card> allSolutions = solver.getSolutions(partialBoard, remainingCards);
 		
-		// Etwas mit Liste machen (ausgabe auf Konsole, File..)
+		//Konsolenausgabe
 		
 		FileOutputStream solutionfile = new FileOutputStream("Files/Solutionsflugzeug.txt");
 		ObjectOutputStream oos = new ObjectOutputStream(solutionfile);
